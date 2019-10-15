@@ -7,9 +7,9 @@ import MultipleSelect from "../components/MultipleSelect";
 import PlayerNameModal from "./PlayerNameModal";
 
 let Settings = ({ navigation }) => {
-  const [nbPlayer, setNbPlayer] = useState(4);
-  const [nbUnkown, setNbUnkown] = useState(0);
-  const [nbCard, setNbCard] = useState(0);
+  const [nbPlayer, setNbPlayer] = useState(2);
+  const [nbUnkown, setNbUnkown] = useState(5);
+  const [nbCard, setNbCard] = useState(10);
   const [showModale, setShowModal] = useState(false);
 
   _renderSetting = () => {

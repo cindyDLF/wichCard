@@ -18,7 +18,6 @@ let PlayerName = ({ nbPlayer, navigation, nbUnkown, nbCard }) => {
   let [iSet, setI] = useState(0);
   let arrInput = [];
   let [goToPlay, setGoToPlay] = useState(false);
-  console.log(nbUnkown, nbCard, players);
 
   _renderInput = () => {
     for (i = 0; i < nbPlayer; i++) arrInput.push(i);
