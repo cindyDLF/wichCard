@@ -11,7 +11,7 @@ import { shuffle } from "../utils";
 
 //import components
 import Loading from "../components/Loading";
-import Card from "../components/Card";
+import Title from "../components/Title";
 
 //import lib
 import CardFlip from "react-native-card-flip";
@@ -80,12 +80,11 @@ let Game = ({ navigation }) => {
     });
     return card;
   }
-
-  console.log(cards);
   if (cards.length !== 0) {
     return (
       <View>
-        <Text>Game</Text>
+        <Title text={players[actualPlayer].point} />
+        <Title text={players[actualPlayer].value} />
         <View style={styles.containerCard}>{_displayCardGame()}</View>
       </View>
     );
