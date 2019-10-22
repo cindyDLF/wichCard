@@ -3,9 +3,16 @@ import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
 
 const width = Math.round(Dimensions.get("window").width);
 
-const Button = ({ text, onPress, goTo }) => (
+const Button = ({ text, onPress, goTo, widthButton, padding, marginTop }) => (
   <TouchableOpacity
-    style={[styles.button, goTo ? styles.enableBtn : styles.disableBtn]}
+    style={[
+      styles.button,
+      width ? { width: widthButton } : { width: width - 70 },
+      padding ? { padding } : { padding: 20 },
+      marginTop ? { marginTop } : null,
+
+      goTo ? styles.enableBtn : styles.disableBtn
+    ]}
     onPress={onPress}
   >
     <Text style={styles.text}>{text}</Text>
@@ -16,9 +23,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    padding: 20,
-    width: width - 70,
-    marginTop: 40
+    //marginTop: 40
   },
   text: {
     textAlign: "center",

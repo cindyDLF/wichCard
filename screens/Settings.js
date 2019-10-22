@@ -48,6 +48,7 @@ let Settings = ({ navigation }) => {
                 ? setShowModal(true)
                 : null
             }
+            marginTop={50}
           />
         </View>
       );

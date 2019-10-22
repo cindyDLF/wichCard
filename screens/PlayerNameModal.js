@@ -75,6 +75,7 @@ let PlayerName = ({ nbPlayer, navigation, nbUnkown, nbCard }) => {
               })
             : null;
         }}
+        marginTop={50}
       />
     </View>
   );

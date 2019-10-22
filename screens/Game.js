@@ -4,7 +4,8 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 
 import { shuffle } from "../utils";
@@ -12,16 +13,20 @@ import { shuffle } from "../utils";
 //import components
 import Loading from "../components/Loading";
 import Title from "../components/Title";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 //import lib
 import CardFlip from "react-native-card-flip";
 
 const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 let Game = ({ navigation }) => {
   const [actualPlayer, setActualPlayer] = useState(0);
   const [players, setPlayers] = useState(navigation.getParam("players"));
   const [cards, setCards] = useState([]);
+  const [inputChoose, setInputChoose] = useState("");
 
   useEffect(() => {
     let arrCard = [];
@@ -53,6 +58,35 @@ let Game = ({ navigation }) => {
     });
   }
 
+  function _displayPlayerName() {
+    if (players) {
+      const displayPlayer = players.map((player, idx) => {
+        return (
+          <View key={idx} style={styles.containerPlayer}>
+            <Text
+              style={[
+                styles.textPlayer,
+                actualPlayer === idx ? styles.textActualPlayer : null
+              ]}
+            >
+              {player.value}
+            </Text>
+            <Text
+              style={[
+                styles.textPlayer,
+                actualPlayer === idx ? styles.textActualPlayer : null
+              ]}
+            >
+              {player.point}
+            </Text>
+          </View>
+        );
+      });
+      return displayPlayer;
+    } else {
+      return <Loading />;
+    }
+  }
   function _displayCardGame() {
     const card = cards.map(item => {
       return (
@@ -83,9 +117,20 @@ let Game = ({ navigation }) => {
   if (cards.length !== 0) {
     return (
       <View>
-        <Title text={players[actualPlayer].point} />
-        <Title text={players[actualPlayer].value} />
-        <View style={styles.containerCard}>{_displayCardGame()}</View>
+        {_displayPlayerName()}
+        <View style={styles.containerInput}>
+          <Input width={150} value={inputChoose} setValue={setInputChoose} />
+          <Button
+            widthButton={100}
+            text="OK ?"
+            goTo={true}
+            padding={10}
+            marginTop={null}
+          />
+        </View>
+        <ScrollView contentContainerStyle={styles.containerCard}>
+          {_displayCardGame()}
+        </ScrollView>
       </View>
     );
   } else {
@@ -95,11 +140,14 @@ let Game = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   containerCard: {
-    width,
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center"
+    flexGrow: 1,
+    width,
+    justifyContent: "center",
+    paddingBottom: 300,
+    paddingTop: 20
   },
   cardContainer: {
     width: width - 280,
@@ -118,6 +166,35 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: "center",
     alignItems: "center"
+  },
+  containerInput: {
+    backgroundColor: "#C3C3C3",
+    width,
+    padding: 10,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    //alignContent: "center",
+    alignItems: "center",
+    zIndex: 10
+  },
+  containerPlayer: {
+    display: "flex",
+    flexDirection: "row",
+    width,
+    // padding: 20,
+    justifyContent: "space-between",
+    paddingRight: 40,
+    paddingLeft: 40,
+    paddingBottom: 10,
+    paddingTop: 10
+  },
+  textPlayer: {
+    fontWeight: "bold",
+    fontSize: 20
+  },
+  textActualPlayer: {
+    color: "#1BA8F0"
   }
 });
 

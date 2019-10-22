@@ -34,7 +34,8 @@ const InputStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     color: "black",
-    paddingRight: 30 // to ensure the text is never behind the icon
+    paddingRight: 30, // to ensure the text is never behind the icon
+    backgroundColor: "#fff"
   },
   disable: {
     borderColor: "#C3C3C3"
