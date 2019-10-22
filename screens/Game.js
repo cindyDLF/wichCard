@@ -20,13 +20,13 @@ import Button from "../components/Button";
 import CardFlip from "react-native-card-flip";
 
 const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 let Game = ({ navigation }) => {
   const [actualPlayer, setActualPlayer] = useState(0);
   const [players, setPlayers] = useState(navigation.getParam("players"));
   const [cards, setCards] = useState([]);
   const [inputChoose, setInputChoose] = useState("");
+  const [disable, setDisable] = useState(true);
 
   useEffect(() => {
     let arrCard = [];
@@ -56,6 +56,41 @@ let Game = ({ navigation }) => {
     return arrCard.some(function(el) {
       return el.statut === random;
     });
+  }
+
+  function _changePlayer() {
+    if (actualPlayer === players.length - 1) {
+      setActualPlayer(0);
+    } else {
+      setActualPlayer(actualPlayer + 1);
+    }
+  }
+
+  function _pointSystem(point) {
+    console.log(players);
+    const winner = players;
+    winner[actualPlayer].point += point;
+    setPlayers(winner);
+    _changePlayer();
+  }
+
+  function _findCard(item) {
+    const valueCard = item.props.children[1].props.children.props.children;
+    item.flip();
+    const arrCard = cards;
+    const card = arrCard.findIndex(x => x.statut === valueCard);
+
+    if (Number.isInteger(valueCard)) {
+      arrCard[card].find = true;
+      setCards(arrCard);
+    } else {
+      item.flip();
+    }
+    // props.children.props.children
+  }
+
+  function _cardIsEmpty(item) {
+    item.flip();
   }
 
   function _displayPlayerName() {
@@ -102,11 +137,14 @@ let Game = ({ navigation }) => {
         >
           <TouchableOpacity
             style={styles.cardContainer}
-            onPress={() => item.flip()}
+            onPress={() => _findCard(item, card)}
           >
             <Text>Try me</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cardContainer}>
+          <TouchableOpacity
+            style={styles.cardContainer}
+            onPress={() => _cardIsEmpty(item)}
+          >
             <Text>{item.statut}</Text>
           </TouchableOpacity>
         </CardFlip>
@@ -119,13 +157,19 @@ let Game = ({ navigation }) => {
       <View>
         {_displayPlayerName()}
         <View style={styles.containerInput}>
-          <Input width={150} value={inputChoose} setValue={setInputChoose} />
+          <Input
+            width={150}
+            value={inputChoose}
+            setValue={setInputChoose}
+            disable={disable}
+          />
           <Button
             widthButton={100}
             text="OK ?"
             goTo={true}
             padding={10}
             marginTop={null}
+            onPress={() => _pointSystem(2)}
           />
         </View>
         <ScrollView contentContainerStyle={styles.containerCard}>
@@ -174,7 +218,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
-    //alignContent: "center",
     alignItems: "center",
     zIndex: 10
   },
@@ -182,7 +225,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width,
-    // padding: 20,
     justifyContent: "space-between",
     paddingRight: 40,
     paddingLeft: 40,
